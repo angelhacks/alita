@@ -6,6 +6,7 @@ const MIXER_CHANNEL = "808610652007563285";
 const MIXER_MESSAGE = "812927864974344193";
 const GUILD_ID = "803697140144144426";
 const VERIFY_ROlE = "803705995162288169";
+const NOT_VERIFIED_ROLE = "803706005233729566";
 
 config();
 const client = new Discord.Client();
@@ -19,7 +20,7 @@ client.on("ready", () => {
 
 client.on("message", async (msg) => {
   if (msg.content === "verify" && msg.channel.id == VERIFY_CHANNEL) {
-    let code = getRandomString(10);
+    let code = getRandomString(6);
     await base("People").create([
       {
         fields: {
@@ -33,17 +34,21 @@ client.on("message", async (msg) => {
     msg.delete();
   } else if (msg.content.slice(0, 6) == "verify" && msg.channel.type == "dm") {
     let people = await base("People")
-      .select({ filterByFormula: `ID="${msg.author.id}"` })
+      .select({ filterByFormula: `Verify="${msg.content.slice(7)}"` })
       .all();
     if (people.length == 0) {
       msg.reply("Didn't find you... try again!");
       return;
     }
-    if (people[0].get("Verify") == msg.content.slice(7)) {
+    if (people[0].get("ID") == msg.author.id) {
       client.guilds.cache
         .get(GUILD_ID)
         .members.cache.get(msg.author.id)
         .roles.add(VERIFY_ROlE);
+      client.guilds.cache
+        .get(GUILD_ID)
+        .members.cache.get(msg.author.id)
+        .roles.remove(NOT_VERIFIED_ROLE);
       msg.reply("Congrats! You're verified!");
     } else {
       msg.reply("Try Again!");
@@ -77,6 +82,10 @@ client.on("message", async (msg) => {
       console.log(e);
     }
   }
+});
+
+client.on("guildMemberAdd", (member) => {
+  member.roles.add(NOT_VERIFIED_ROLE);
 });
 
 client.login(process.env.DISCORD_TOKEN).then(async () => {
