@@ -29,9 +29,7 @@ client.on("message", async (msg) => {
         },
       },
     ]);
-    msg.author.send(
-      `Great! Now just type in \`verify ${getRandomString(10)}\``
-    );
+    msg.author.send(`Great! Now just type in \`verify ${code}\``);
     msg.delete();
   } else if (msg.content.slice(0, 6) == "verify" && msg.channel.type == "dm") {
     let people = await base("People")
