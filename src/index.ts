@@ -94,7 +94,7 @@ client.on("message", async (msg) => {
   } else {
     let done = false;
     Object.keys(respond).forEach((v) => {
-      if (v.includes(msg.content) && !done) {
+      if (msg.content.includes(v) && !done) {
         msg.channel.send(respond[v]);
         done = true;
       }
