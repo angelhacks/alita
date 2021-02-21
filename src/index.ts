@@ -7,6 +7,8 @@ const MIXER_MESSAGE = "812927864974344193";
 const GUILD_ID = "803697140144144426";
 const VERIFY_ROlE = "803705995162288169";
 const NOT_VERIFIED_ROLE = "803706005233729566";
+var respond = {};
+var event_reload = 0;
 
 config();
 const client = new Discord.Client();
@@ -19,6 +21,14 @@ client.on("ready", () => {
 });
 
 client.on("message", async (msg) => {
+  if (event_reload == 0) {
+    let records = await base("respond").select().all();
+    records.forEach((record) => {
+      respond[record.get("phrase")] = record.get("reply");
+    });
+    event_reload = 10;
+  }
+
   if (msg.content === "verify" && msg.channel.id == VERIFY_CHANNEL) {
     let code = getRandomString(6);
     await base("People").create([
@@ -81,7 +91,17 @@ client.on("message", async (msg) => {
     } catch (e) {
       console.log(e);
     }
+  } else {
+    let done = false;
+    Object.keys(respond).forEach((v) => {
+      if (v.includes(msg.content) && !done) {
+        msg.channel.send(respond[v]);
+        done = true;
+      }
+    });
   }
+
+  event_reload--;
 });
 
 client.on("guildMemberAdd", (member) => {
