@@ -51,6 +51,9 @@ client.on("message", async (msg) => {
       return;
     }
     if (people[0].get("ID") == msg.author.id) {
+      await base("People").update(people[0].id, {
+        Verified: true,
+      });
       client.guilds.cache
         .get(GUILD_ID)
         .members.cache.get(msg.author.id)
