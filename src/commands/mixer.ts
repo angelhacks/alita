@@ -49,6 +49,7 @@ export const messageListener = async () => {
             fields: {
               ID: user.id,
               Username: user.username,
+              Verified: true,
             },
           },
         ]);
@@ -58,6 +59,13 @@ export const messageListener = async () => {
 		
 		Once you're done, type \`check\` into this DM!`
       );
+      if (records[0].get("Teamate Names")) {
+        user.send(
+          `By the way, the people - \`${records[0].get(
+            "Teamate Names"
+          )}\` have all requested to be your team mate. Be sure to request them back to make it official!`
+        );
+      }
     }
   });
 };
