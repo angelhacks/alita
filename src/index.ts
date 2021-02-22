@@ -7,6 +7,7 @@ const MIXER_MESSAGE = "812927864974344193";
 const GUILD_ID = "803697140144144426";
 const VERIFY_ROlE = "803705995162288169";
 const NOT_VERIFIED_ROLE = "803706005233729566";
+const WELCOME_CHANNEL = "803697792031129640";
 var respond = {};
 var event_reload = 0;
 
@@ -63,6 +64,12 @@ client.on("message", async (msg) => {
         .members.cache.get(msg.author.id)
         .roles.remove(NOT_VERIFIED_ROLE);
       msg.reply("Congrats! You're verified!");
+      let welcome_channel = <Discord.TextChannel>(
+        client.guilds.cache.get(GUILD_ID).channels.cache.get(WELCOME_CHANNEL)
+      );
+      welcome_channel.send(
+        `Welcome <@${msg.author.id}>, to THE Angel Hacks server!! woot woot`
+      );
     } else {
       msg.reply("Try Again!");
     }
