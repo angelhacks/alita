@@ -56,7 +56,7 @@ client.login(process.env.DISCORD_TOKEN).then(async () => {
   let channel = <Discord.TextChannel>(
     await client.channels.fetch(process.env.BOT_SPAM)
   );
-  channel.send("Up and running!");
+  channel.send("Up and running uwu!");
 
   await messageListener();
 });
