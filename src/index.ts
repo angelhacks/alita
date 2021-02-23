@@ -4,7 +4,11 @@ config();
 import * as Discord from "discord.js";
 import { client } from "./utils/discord";
 import { base } from "./utils/airtable";
-import { verifyChannelListener, verifyDMListener } from "./commands/verify";
+import {
+  verifyChannelListener,
+  verifyDMListener,
+  checkWelcomeTruncate,
+} from "./commands/verify";
 import { mixerDMCheckListener, messageListener } from "./commands/mixer";
 var respond = {};
 var event_reload = 0;
@@ -40,7 +44,7 @@ client.on("message", async (msg) => {
       }
     });
   }
-
+  checkWelcomeTruncate(msg);
   event_reload--;
 });
 

@@ -3,6 +3,9 @@ import { base } from "../utils/airtable";
 import { client } from "../utils/discord";
 import getRandomString from "../utils/randomString";
 
+var truncate_people = [];
+var latest_welcome = <Discord.Message>null;
+
 const welcome_images = [
   "http://u.filein.io/aBnlg0tuXp.gif",
   "https://media.giphy.com/media/YrZECW1GgBkqat6F0B/giphy.gif",
@@ -23,6 +26,16 @@ const welcome_second_text = [
   "I'd do whatever I had to for you. I'd give you whatever I have. I'd give you my heart.",
   "I'm going to need you to stand way back.",
 ];
+
+export const checkWelcomeTruncate = (msg: Discord.Message) => {
+  if (
+    msg.channel.id == process.env.WELCOME_CHANNEL &&
+    !msg.author.bot &&
+    msg.author.id != process.env.SELF_ID
+  ) {
+    latest_welcome = null;
+  }
+};
 
 export const verifyChannelListener = async (msg: Discord.Message) => {
   let code = getRandomString(6);
@@ -72,15 +85,28 @@ const handleWelcome = async (msg: Discord.Message) => {
       .get(process.env.GUILD_ID)
       .channels.cache.get(process.env.WELCOME_CHANNEL)
   );
-  welcome_channel.send(
-    `<@${msg.author.id}> ${
-      welcome_text[Math.floor(Math.random() * welcome_text.length)]
-    }`
-  );
-  welcome_channel.send(
-    welcome_images[Math.floor(Math.random() * welcome_images.length)]
-  );
-  welcome_channel.send(
-    welcome_second_text[Math.floor(Math.random() * welcome_second_text.length)]
-  );
+  if (latest_welcome == null) {
+    truncate_people = [`<@${msg.author.id}>`];
+    let welcome = await welcome_channel.send(
+      `<@${msg.author.id}> ${
+        welcome_text[Math.floor(Math.random() * welcome_text.length)]
+      }`
+    );
+    latest_welcome = welcome;
+    await welcome_channel.send(
+      welcome_images[Math.floor(Math.random() * welcome_images.length)]
+    );
+    await welcome_channel.send(
+      welcome_second_text[
+        Math.floor(Math.random() * welcome_second_text.length)
+      ]
+    );
+  } else {
+    truncate_people.push(`<@${msg.author.id}>`);
+    latest_welcome.edit(
+      `${truncate_people.join(", ")} ${
+        welcome_text[Math.floor(Math.random() * welcome_text.length)]
+      }`
+    );
+  }
 };
