@@ -25,7 +25,7 @@ export const mixerDMCheckListener = async (msg: Discord.Message) => {
     });
 
     msg.reply(
-      "Done! We'll contact you when we create the server channels for your team (or not if you're solo)!"
+      "Donezo! We'll contact you when we create the server channels for your team (or not if you're solo)!"
     );
   } catch (e) {
     console.log(e);
