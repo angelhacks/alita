@@ -7,7 +7,8 @@
   "author": "angelhacks",
   "license": "GPL",
   "scripts": {
-    "start": "tsc && node dist/index.js"
+    "start": "tsc && node dist/index.js",
+    "start-mixer": "tsc && node dist/scripts/startMixer.js"
   },
   "devDependencies": {
     "@berry/pnpify": "^0.1.0",

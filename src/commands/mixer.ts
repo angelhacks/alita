@@ -24,7 +24,7 @@ export const mixerDMCheckListener = async (msg: Discord.Message) => {
       People: [people[0].id],
     });
 
-    msg.reply("Done! We'll contact you when teams are made!");
+    msg.reply("Done! We'll contact you when we create your server channels!");
   } catch (e) {
     console.log(e);
   }
