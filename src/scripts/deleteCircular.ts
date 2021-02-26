@@ -3,7 +3,7 @@ import { base } from "../utils/airtable";
 
 const run = async () => {
   let circles = await base("Team Mixer")
-    .select({ filterByFormula: "NOT({Teammates}='')" })
+    .select({ filterByFormula: "AND(NOT({Teammates}=''),NOT(People=''))" })
     .all();
   circles = circles.filter((record) => {
     if (record.get("Teammates").includes(record.get("People")[0])) {
@@ -20,4 +20,4 @@ const run = async () => {
     });
   });
 };
-run();
+run().catch(console.log);
