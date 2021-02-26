@@ -38,7 +38,7 @@ client.on("message", async (msg) => {
   } else {
     let done = false;
     Object.keys(respond).forEach((v) => {
-      if (msg.content.includes(v) && !done) {
+      if (msg.content.toLowerCase().includes(v) && !done) {
         msg.channel.send(respond[v]);
         done = true;
       }
