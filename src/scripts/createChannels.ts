@@ -10,8 +10,10 @@ const run = async () => {
   let verified = await guild.roles.fetch(process.env.VERIFY_ROLE);
   let mentor = await guild.roles.fetch(process.env.MENTOR_ROLE);
   let helper = await guild.roles.fetch(process.env.HELPER_ROLE);
-  console.log(verified.id);
-  teams.forEach(async (team) => {
+  console.log("Starting creation!!!");
+  for (let i = 0; i < teams.length; i++) {
+    let team = teams[i];
+    console.log(`On ${team.get("Name")}`);
     let IDs = team.get("ids");
     let role = await guild.roles.create({
       data: {
@@ -39,12 +41,16 @@ const run = async () => {
       type: "voice",
       parent: category,
     });
-    let people: Array<Discord.GuildMember> = await Promise.all(
-      IDs.map((v) => guild.members.fetch(v))
-    );
-    people.forEach(async (person) => {
-      await person.roles.add(role);
-    });
+    try {
+      let people: Array<Discord.GuildMember> = await Promise.all(
+        IDs.map((v) => guild.members.fetch(v))
+      );
+      people.forEach(async (person) => {
+        await person.roles.add(role);
+      });
+    } catch (e) {
+      console.log(e);
+    }
     await textChannel.send(
       `${IDs.map((v) => `<@${v}>`).join(
         ", "
@@ -58,9 +64,9 @@ const run = async () => {
             .all();
           if (person[0].get("Skills")) {
             await textChannel.send(
-              `<@${v}> is an ${person[0].get("Level")} and is a ${person[0]
-                .get("Skills")
-                .join(", ")}!`
+              `<@${v}> is an ${person[0].get(
+                "Level"
+              )} and knows ${person[0].get("Skills").join(", ")}!`
             );
           } else {
             await textChannel.send(`<@${v}> is a ${person[0].get("Level")}`);
@@ -74,7 +80,8 @@ const run = async () => {
       voiceID: voiceChannel.id,
       catagoryID: category.id,
     });
-    client.destroy();
-  });
+  }
+  console.log("Doned!");
+  client.destroy();
 };
 client.login(process.env.DISCORD_TOKEN).then(run);
