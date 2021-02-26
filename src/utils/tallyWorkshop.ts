@@ -26,7 +26,9 @@ export const run = async (msg: Discord.Message) => {
     })
   );
 
-  (await base("Workshop").select().all()).forEach((v) => v.destroy());
+  //(await base("Workshop").select().all()).forEach((v) => v.destroy());
 
-  msg.reply("doned");
+  msg.reply(
+    "Done! Now go into the Airtable, clone the Workshop table and name it whatever the workshop was named. Then clear the Workshop table (delete all the records), to clean it up for the next workshop!"
+  );
 };
