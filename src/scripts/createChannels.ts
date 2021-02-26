@@ -51,20 +51,22 @@ const run = async () => {
       )} welcome to your new catagory with a private text and voice channel! You can change the name with \`alita rename newname\`! Make sure to ping the organizers if you need help, or someone isn't active for a long time! Ping helpers or mentors if you need code help. UWU have a fun time!`
     );
     if (team.get("mixer")) {
-      IDs.forEach(async (v) => {
-        let person = await base("Team Mixer")
-          .select({ filterByFormula: `ID=${v}` })
-          .all();
-        if (person[0].get("Skills")) {
-          await textChannel.send(
-            `<@${v}> is an ${person[0].get("Level")} and is a ${person[0]
-              .get("Skills")
-              .join(", ")}!`
-          );
-        } else {
-          await textChannel.send(`<@${v}> is a ${person[0].get("Level")}`);
-        }
-      });
+      await Promise.all(
+        IDs.map(async (v) => {
+          let person = await base("Team Mixer")
+            .select({ filterByFormula: `ID=${v}` })
+            .all();
+          if (person[0].get("Skills")) {
+            await textChannel.send(
+              `<@${v}> is an ${person[0].get("Level")} and is a ${person[0]
+                .get("Skills")
+                .join(", ")}!`
+            );
+          } else {
+            await textChannel.send(`<@${v}> is a ${person[0].get("Level")}`);
+          }
+        })
+      );
     }
     await base("Teams").update(team.id, {
       roleID: role.id,
@@ -72,7 +74,7 @@ const run = async () => {
       voiceID: voiceChannel.id,
       catagoryID: category.id,
     });
+    client.destroy();
   });
 };
-
-run().catch(console.log);
+client.login(process.env.DISCORD_TOKEN).then(run);
