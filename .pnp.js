@@ -42,7 +42,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["airtable", "npm:0.10.1"],
             ["discord.js", "npm:12.5.1"],
             ["dotenv", "npm:8.2.0"],
-            ["typescript", "patch:typescript@npm%3A4.1.5#builtin<compat/typescript>::version=4.1.5&hash=cc6730"]
+            ["typescript", "patch:typescript@npm%3A4.1.5#builtin<compat/typescript>::version=4.1.5&hash=cc6730"],
+            ["unique-names-generator", "npm:4.4.0"]
           ],
           "linkType": "SOFT",
         }]
@@ -167,7 +168,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["airtable", "npm:0.10.1"],
             ["discord.js", "npm:12.5.1"],
             ["dotenv", "npm:8.2.0"],
-            ["typescript", "patch:typescript@npm%3A4.1.5#builtin<compat/typescript>::version=4.1.5&hash=cc6730"]
+            ["typescript", "patch:typescript@npm%3A4.1.5#builtin<compat/typescript>::version=4.1.5&hash=cc6730"],
+            ["unique-names-generator", "npm:4.4.0"]
           ],
           "linkType": "SOFT",
         }]
@@ -398,6 +400,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/typescript-patch-66c7d3b992-58cc7786be.zip/node_modules/typescript/",
           "packageDependencies": [
             ["typescript", "patch:typescript@npm%3A4.1.5#builtin<compat/typescript>::version=4.1.5&hash=cc6730"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["unique-names-generator", [
+        ["npm:4.4.0", {
+          "packageLocation": "./.yarn/cache/unique-names-generator-npm-4.4.0-a62d225946-94d083f18a.zip/node_modules/unique-names-generator/",
+          "packageDependencies": [
+            ["unique-names-generator", "npm:4.4.0"]
           ],
           "linkType": "HARD",
         }]

@@ -8,7 +8,11 @@
   "license": "GPL",
   "scripts": {
     "start": "tsc && node dist/index.js",
-    "start-mixer": "tsc && node dist/scripts/startMixer.js"
+    "start-mixer": "tsc && node -r dotenv/config dist/scripts/startMixer.js --trace-warnings",
+    "start-teams": "tsc && node -r dotenv/config dist/scripts/preTeams.js --trace-warnings",
+    "create-channels": "tsc && node -r dotenv/config dist/scripts/createChannels.js --trace-warnings",
+    "link": "tsc && node -r dotenv/config dist/scripts/manualLinks.js",
+    "circles": "tsc && node -r dotenv/config dist/scripts/deleteCircular.js"
   },
   "devDependencies": {
     "@berry/pnpify": "^0.1.0",
@@ -18,6 +22,7 @@
   "dependencies": {
     "airtable": "^0.10.1",
     "discord.js": "^12.5.1",
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "unique-names-generator": "^4.4.0"
   }
 }

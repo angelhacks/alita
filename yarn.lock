@@ -105,6 +105,7 @@ __metadata:
     discord.js: ^12.5.1
     dotenv: ^8.2.0
     typescript: ^4.1.5
+    unique-names-generator: ^4.4.0
   languageName: unknown
   linkType: soft
 
@@ -302,6 +303,13 @@ typescript@^4.1.5:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 58cc7786be0f8485c124944883b1384287532e4867ec37f1fb5cb2811dbc10f7a9decccad89097f924043285f3515bfd8223c61dbb4f88af00b2d8dc2ef73207
+  languageName: node
+  linkType: hard
+
+"unique-names-generator@npm:^4.4.0":
+  version: 4.4.0
+  resolution: "unique-names-generator@npm:4.4.0"
+  checksum: 94d083f18a1741fa29141614a6ac40c79db7fa03f9d88385f81f9bcbba7a6f46b34f291d441a66787d448cee42734e40fcae50280086c003be02d16750894648
   languageName: node
   linkType: hard
 

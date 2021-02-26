@@ -71,3 +71,25 @@ export const messageListener = async () => {
     }
   });
 };
+
+export const rename = async (msg: Discord.Message) => {
+  let name = msg.content.split("alita rename ")[1];
+  await msg.reply(`Changing to \`${name}\``);
+  let user = msg.author.id;
+  let person = await base("Team Mixer")
+    .select({ filterByFormula: `ID='${user}'` })
+    .all();
+  let team = await base("Teams").find(person[0].get("Teams")[0]);
+  let role = await msg.guild.roles.fetch(team.get("roleID"));
+  let catagory = <Discord.CategoryChannel>(
+    await client.channels.fetch(team.get("catagoryID"))
+  );
+  await role.edit({
+    name: name,
+  });
+  await base("Teams").update(team.id, {
+    Name: name,
+  });
+  await catagory.setName(name);
+  msg.reply("Done!");
+};

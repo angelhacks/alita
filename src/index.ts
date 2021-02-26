@@ -9,7 +9,11 @@ import {
   verifyDMListener,
   checkWelcomeTruncate,
 } from "./commands/verify";
-import { mixerDMCheckListener, messageListener } from "./commands/mixer";
+import {
+  mixerDMCheckListener,
+  messageListener,
+  rename,
+} from "./commands/mixer";
 var respond = {};
 var event_reload = 0;
 
@@ -35,6 +39,11 @@ client.on("message", async (msg) => {
     verifyDMListener(msg);
   } else if (msg.content == "check" && msg.channel.type == "dm") {
     mixerDMCheckListener(msg);
+  } else if (
+    msg.content.slice(0, 13) == "alita rename " &&
+    msg.content.split("alita rename ")[1] != ""
+  ) {
+    rename(msg);
   } else {
     let done = false;
     Object.keys(respond).forEach((v) => {

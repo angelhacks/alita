@@ -27,7 +27,7 @@ class Member {
   getPartners() {
     let bidirectional: Array<Member> = [this];
     if (!this.requested) {
-      return null;
+      return bidirectional;
     }
     this.requested.forEach((member) => {
       if (member?.requested?.includes(this)) {
@@ -40,9 +40,8 @@ class Member {
 
 const runMixer = async () => {
   let teamMixer = await base("Team Mixer")
-    .select({ filterByFormula: `NOT(Mixer="")` })
+    .select({ filterByFormula: `Mixer=""` })
     .all();
-  let teamMixerAll = await base("Team Mixer").select().all();
   let peopleTable = await base("People")
     .select({ filterByFormula: `NOT({Team Mixer}="")` })
     .all();
@@ -52,7 +51,7 @@ const runMixer = async () => {
   peopleTable.forEach((record) => {
     peopleTableSearch[record.id] = record;
   });
-  teamMixerAll.forEach((record) => {
+  teamMixer.forEach((record) => {
     mixerSearch[record.id] = record;
   });
 
@@ -104,7 +103,7 @@ const runMixer = async () => {
   });
 
   todo.forEach((member) => {
-    member.requested = member.requestUnformated?.map((record) => {
+    member.requested = member.requestUnformated.map((record) => {
       return record ? people[record.id] : null;
     });
   });
@@ -114,72 +113,20 @@ const runMixer = async () => {
       .getPartners()
       ?.map((v) => v.id)
       .sort();
-    if (team && team.length > 1) {
+    if (team) {
       unformattedTeams.push(team);
     }
   });
-  let toFill = [];
   unformattedTeams.forEach((team) => {
     if (
       team &&
       unformattedTeams.filter((v) => JSON.stringify(v) == JSON.stringify(team))
         .length == team.length
     ) {
-      if (team.length == 4) {
-        teams.push(team);
-      } else {
-        toFill.push(team);
-      }
+      teams.push(team);
     }
-  });
-  toFill = [...new Set(toFill.map((v) => JSON.stringify(v)))].map((v) =>
-    JSON.parse(v)
-  );
-  console.log(toFill);
-  toFill = toFill.map((team) => {
-    return {
-      team: team,
-      skills: [...new Set(team.map((id) => people[id].record.get("Level")))],
-    };
   });
 
-  let toSort = Object.values(people).filter((member) => !member.requested);
-  let noMore = [];
-  toSort.forEach((person, pi) => {
-    let sorted = false;
-    toFill.forEach((team, i) => {
-      if (!team.team || noMore.includes(team.team[0])) {
-        return;
-      }
-      if (team.team.length == 4) {
-        teams.push(team.team);
-        noMore.push(team.team[0]);
-        delete toFill[i];
-        return;
-      }
-      if (!sorted && team.skills.includes(person.record.get("Level"))) {
-        toFill[i].team.push(person.id);
-        delete toSort[pi];
-        sorted = true;
-      }
-    });
-    if (sorted == false) {
-      toFill.push([person]);
-    }
-  });
-  toSort = toSort.filter((v) => v);
-  if (toSort.length > 0) {
-    let i,
-      j,
-      temparray,
-      chunk = 4;
-    for (i = 0, j = toSort.length; i < j; i += chunk) {
-      temparray = toSort.slice(i, i + chunk);
-      teams.push(temparray.map((v) => v.id));
-    }
-  }
-  toFill = toFill.filter((v) => v);
-  teams.push(...toFill.map((v) => v.team));
   teams = teams.filter((v) => v);
   teams = [...new Set(teams.map((v) => JSON.stringify(v)))].map((v) =>
     JSON.parse(v)
@@ -195,7 +142,6 @@ const runMixer = async () => {
               style: "capital",
             }),
             Members: v,
-            mixer: true,
           },
         },
       ])

@@ -67,7 +67,7 @@ export const verifyDMListener = async (msg: Discord.Message) => {
     client.guilds.cache
       .get(process.env.GUILD_ID)
       .members.cache.get(msg.author.id)
-      .roles.add(process.env.VERIFY_ROlE);
+      .roles.add(process.env.VERIFY_ROLE);
     client.guilds.cache
       .get(process.env.GUILD_ID)
       .members.cache.get(msg.author.id)
