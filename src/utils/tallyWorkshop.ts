@@ -1,7 +1,10 @@
+import * as Discord from "discord.js";
 import { base } from "../utils/airtable";
 import { client } from "../utils/discord";
-const DEFAULT = 30;
-export const run = async () => {
+
+export const run = async (msg: Discord.Message) => {
+  let DEFAULT = Number(msg.content.split("alita count ")[1]);
+  msg.reply(`Counting workshop points with a base of ${DEFAULT}`);
   let people = await base("Workshop")
     .select({ filterByFormula: `NOT(confirmed="")` })
     .all();
@@ -24,7 +27,6 @@ export const run = async () => {
   );
 
   (await base("Workshop").select().all()).forEach((v) => v.destroy());
-  client.destroy();
-};
 
-client.login(process.env.DISCORD_TOKEN).then(run);
+  msg.reply("doned");
+};

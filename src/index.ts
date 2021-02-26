@@ -14,6 +14,7 @@ import {
   messageListener,
   rename,
 } from "./commands/mixer";
+import { run } from "./utils/tallyWorkshop";
 var respond = {};
 var event_reload = 0;
 
@@ -44,6 +45,12 @@ client.on("message", async (msg) => {
     msg.content.split("alita rename ")[1] != ""
   ) {
     rename(msg);
+  } else if (
+    msg.channel.id == process.env.ADMIN_CHANNEL &&
+    msg.content.slice(0, 12) == "alita count " &&
+    msg.content.split("alita count ")[1] != ""
+  ) {
+    run(msg);
   } else {
     let done = false;
     Object.keys(respond).forEach((v) => {
