@@ -12,7 +12,8 @@
     "start-teams": "tsc && node -r dotenv/config dist/scripts/preTeams.js --trace-warnings",
     "create-channels": "tsc && node -r dotenv/config dist/scripts/createChannels.js --trace-warnings",
     "link": "tsc && node -r dotenv/config dist/scripts/manualLinks.js",
-    "circles": "tsc && node -r dotenv/config dist/scripts/deleteCircular.js"
+    "circles": "tsc && node -r dotenv/config dist/scripts/deleteCircular.js",
+    "tally": "tsc && node -r dotenv/config dist/scripts/tallyWorkshop.js"
   },
   "devDependencies": {
     "@berry/pnpify": "^0.1.0",
