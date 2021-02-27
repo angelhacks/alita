@@ -15,6 +15,7 @@ import {
   rename,
 } from "./commands/mixer";
 import { run } from "./utils/tallyWorkshop";
+import { pointCheck } from "./commands/points";
 var respond = {};
 var event_reload = 0;
 
@@ -40,6 +41,8 @@ client.on("message", async (msg) => {
     verifyDMListener(msg);
   } else if (msg.content == "check" && msg.channel.type == "dm") {
     mixerDMCheckListener(msg);
+  } else if (msg.content == "alita points") {
+    pointCheck(msg);
   } else if (
     msg.content.slice(0, 13) == "alita rename " &&
     msg.content.split("alita rename ")[1] != ""
